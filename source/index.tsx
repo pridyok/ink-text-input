@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Text, useInput} from 'ink';
-import chalk from 'chalk';
+import chalk, {ChalkInstance} from 'chalk';
 import type {Except} from 'type-fest';
 
 export type Props = {
@@ -8,6 +8,11 @@ export type Props = {
 	 * Text to display when `value` is empty.
 	 */
 	placeholder?: string;
+
+	/**
+	 * Color to use when rendering placeholders.
+	 */
+	placeholderColor?: ChalkInstance;
 
 	/**
 	 * Listen to user's input. Useful in case there are multiple input components
@@ -49,6 +54,7 @@ export type Props = {
 function TextInput({
 	value: originalValue,
 	placeholder = '',
+	placeholderColor = chalk.grey,
 	focus = true,
 	mask,
 	highlightPastedText = false,
@@ -86,13 +92,13 @@ function TextInput({
 
 	const value = mask ? mask.repeat(originalValue.length) : originalValue;
 	let renderedValue = value;
-	let renderedPlaceholder = placeholder ? chalk.grey(placeholder) : undefined;
+	let renderedPlaceholder = placeholder ? placeholderColor(placeholder) : undefined;
 
 	// Fake mouse cursor, because it's too inconvenient to deal with actual cursor and ansi escapes
 	if (showCursor && focus) {
 		renderedPlaceholder =
 			placeholder.length > 0
-				? chalk.inverse(placeholder[0]) + chalk.grey(placeholder.slice(1))
+				? chalk.inverse(placeholder[0]) + placeholderColor(placeholder.slice(1))
 				: chalk.inverse(' ');
 
 		renderedValue = value.length > 0 ? '' : chalk.inverse(' ');
