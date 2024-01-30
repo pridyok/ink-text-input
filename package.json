@@ -20,8 +20,8 @@
 	"scripts": {
 		"test": "tsc --noEmit && xo && FORCE_COLOR=1 ava",
 		"build": "tsc",
-		"prepare": "tsc",
-		"pretest": "tsc"
+		"prepare": "tsc --build",
+		"pretest": "tsc --build"
 	},
 	"files": [
 		"build"
